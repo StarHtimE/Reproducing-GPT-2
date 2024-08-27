@@ -2,9 +2,6 @@
 Reporter: 金子恒
 Github Author: Andrej Kapathy  
 Code: [https://github.com/karpathy/build-nanogpt](https://github.com/karpathy/build-nanogpt)
-## Introduction
-**关于作者**
-**选择 GPT-2 (124 M) 的原因** 
 ## GPT-2
 #### GPT
 我们首先关注 GPT-2 模型的基础架构：
@@ -23,8 +20,7 @@ Code: [https://github.com/karpathy/build-nanogpt](https://github.com/karpathy/b
 
 ###### forward 函数部分：
 输入的 $idx$（词在词表中的索引序列）是一个形状为 $(B,T)$ 的 tensor，而 $pos$ 是一维的长为 $T$ 的 tensor。对 $idx$ 进行 token embedding（每个词的索引都变为一个 $n_{\text{embd}}$ 维向量）得到 $tok_{emb}$，对 $pos$ 进行 position embedding 得到 $pos_{emb}$：
-$$
-\begin{matrix}
+$$\begin{matrix}
 idx \\
 (B,T)
 \end{matrix}\xrightarrow{\mathrm{wte}}\begin{matrix}
@@ -36,8 +32,7 @@ T
 \end{matrix}\xrightarrow{\mathrm{wpe}}\begin{matrix}
  pos_{emb}\\
 (T,n_{\text{embd}})
-\end{matrix}
-$$
+\end{matrix}$$
 然后将 $tok_{emb}$ 和 $pos_{emb}$ 相加（事实上，我们会将 $pos_{emb}$ 复制 $B$ 份得到一个形状为 $(B,T,n_{\text{embd}})$ 的 tensor 再进行相加操作）得到 $x$，$x$ 是一个形状为 $(B,T,n_{\text{embd}})$ 的 tensor。
 
 在 embedding 之后，$x$ 将通过 $n_{\text{layer}}$ 个 transformer 块，并额外进行一次 LayerNorm。

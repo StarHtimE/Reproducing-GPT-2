@@ -5,18 +5,18 @@ Code: [https://github.com/karpathy/build-nanogpt](https://github.com/karpathy/b
 ## GPT-2
 #### GPT
 我们首先关注 GPT-2 模型的基础架构：
-![[Pasted image 20240805145749.png]]
+
 ###### init 函数部分
 在这一部分，我们用到了 wte, wpe, h, ln，它们分别表示 token embedding, position embedding, block, LayerNorm。此外，我们还有一个 lm head，它是一个线性层，用于将词向量转为预测的 logits，并且它与 wte 共享权重。
 
-![[Pasted image 20240818173919.png]]
+
 ###### init_weights 部分
 它对线性层和嵌入层的权重作略微不同的初始化，主要体现在:
 
 - 线性层的初始化 std 参数可能不为 0.02 。
 - 带有偏置项的线性层会初始化为零。
 
-![[Pasted image 20240818174001.png]]
+
 
 ###### forward 函数部分：
 输入的 $idx$（词在词表中的索引序列）是一个形状为 $(B,T)$ 的 tensor，而 $pos$ 是一维的长为 $T$ 的 tensor。对 $idx$ 进行 token embedding（每个词的索引都变为一个 $n_{\text{embd}}$ 维向量）得到 $tok_{emb}$，对 $pos$ 进行 position embedding 得到 $pos_{emb}$：
@@ -50,11 +50,11 @@ $$
 
 如果模型的输入有 targets 的话，我们还要计算 loss，这里的 loss 就是一维化的 logits 和 targets 的[[交叉熵]]。
 
-![[Pasted image 20240818174239.png]]
+
 #### Block
 接着我们来关注 Block（transformer 块）部分:
 
-![[Pasted image 20240805153857.png]]
+
 
 Block 部分包含两个 [[LayerNorm]]，一个 Attention 和一个 MLP，最后再加以残差连接，即
 $$
@@ -66,7 +66,7 @@ $$
 #### MLP
 在 Block 中，我们先来关注比较简单的 MLP 部分：
 
-![[Pasted image 20240805155259.png]]
+
 
 MLP 部分由两个线性层和一个 [[GELU]] 函数组成，事实上就是
 $$
@@ -114,7 +114,7 @@ y:\left( B,n_{\text{head}},T,\frac{n_{\text{embd}}}{n_{\text{head}}} \right)\xri
 $$
 最后，$y$ 将通过一个线性层得到最终输出。
 
-![[Pasted image 20240805165030.png]]
+
 
 ## Data
 #### FineWeb
